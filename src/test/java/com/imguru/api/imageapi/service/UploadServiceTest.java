@@ -74,7 +74,7 @@ public class UploadServiceTest {
         Mockito.when(restTemplate.postForEntity(Mockito.anyString(),Mockito.any(HttpEntity.class),Mockito.eq(Map.class))).thenReturn(ResponseEntity.ok(response));
         Mockito.when(userService.loadUserDetails(Mockito.anyString())).thenReturn(Optional.of(buildUserEntity()));
         Mockito.when(userService.updateUser(Mockito.any(UserEntity.class))).thenReturn(buildUser());
-        doNothing().when(eventProducer).publishProfileEventToTopic(Mockito.any(UserEntity.class));
+        doNothing().when(eventProducer).publishProfileEventToTopic(Mockito.any(String.class));
         Map<String,Object> map=uploadService.uploadImage("86da8fc7f0ab6b9297b760f16623fd2ff6be752d","{\"title\":\"ImageTitle\",\"description\":\"Image Description\"}");
         Assertions.assertNotNull(map);
         Assertions.assertTrue(map.containsValue("ujskjkkl"));

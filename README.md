@@ -2,6 +2,9 @@
 Image Api is simple rest full microservice which interacting with the imguru opensource rest api for 
 uploading the images and updating the images et....
 
+Please go through the  link https://apidocs.imgur.com/#intro to register the Application to Imguru and get the ClientId and SecretId Details.
+replace those values in application.yml file.
+
 ##### Register The User :
 `curl --location 'http://localhost:8080/api/users/register' \
 --header 'Content-Type: application/json' \
@@ -269,7 +272,7 @@ If user is Unauthorized trying to access the endpoints :
 
 Other than Unauthorized any kind of exception will display in above json format only.
 
-Kafka Event Publishing :
+Kafka Event Publishing : (zookeeper and kafka server should be run in local port 9092)
 =======================
 After completion of Image upload kafka event publisher publush the event to
 kafka topic : **profile_topic**

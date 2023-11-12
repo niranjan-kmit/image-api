@@ -27,12 +27,11 @@ spring:
 # =================================
 imgur:
   client:
-    accessToken: 83e68dc57861a95ede4f3c25a3b33f5fe0c20b3f
+    accessToken: <AccessToken>
     accessTokenUrl: https://api.imgur.com/oauth2/token
-    albumId: Scwk70y
     authorizeUrl: https://api.imgur.com/oauth2/authorize
-    clientId: f1d6d3b2434b315
+    clientId: <ClientId>
     clientSecret: 86da8fc7f0ab6b9297b760f16623fd2ff6be752d
-    uploadUrl: https://api.imgur.com/3/image
+    uploadUrl: <SecretId>
 
 
