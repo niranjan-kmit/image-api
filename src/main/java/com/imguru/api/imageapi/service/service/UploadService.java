@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.imguru.api.imageapi.service.config.ImgurConfig;
 import com.imguru.api.imageapi.service.model.ImageInfo;
 import com.imguru.api.imageapi.service.model.UserEntity;
+import com.imguru.api.imageapi.service.producer.EventProducer;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.logging.log4j.util.Strings;
 import org.springframework.core.ParameterizedTypeReference;
@@ -30,12 +31,14 @@ public class UploadService {
     private final RestTemplate restTemplate;
 
     private final UserService userService;
+    private EventProducer eventProducer;
 
-    public UploadService(ImgurConfig imgurConfig, RestTemplate restTemplate, UserService userService) {
+    public UploadService(ImgurConfig imgurConfig, RestTemplate restTemplate, UserService userService,EventProducer eventProducer) {
         this.imgurConfig = imgurConfig;
         this.objectMapper = new ObjectMapper();
         this.restTemplate = restTemplate;
         this.userService = userService;
+        this.eventProducer=eventProducer;
     }
 
     public Map<String, Object> uploadImage(String base64String, String metaInfo) throws  JsonProcessingException {
@@ -68,6 +71,9 @@ public class UploadService {
         user.setImageIds(imageIds);
         userService.updateUser(user);
         log.info("user profile updated with imageId: {}",imageId);
+        //sending user profile event to kafka topic
+        String message=objectMapper.writeValueAsString(user);
+        eventProducer.publishProfileEventToTopic(message);
         return res;
     }
 

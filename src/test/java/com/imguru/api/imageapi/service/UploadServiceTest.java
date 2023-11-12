@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.imguru.api.imageapi.service.config.ImgurConfig;
 import com.imguru.api.imageapi.service.model.User;
 import com.imguru.api.imageapi.service.model.UserEntity;
+import com.imguru.api.imageapi.service.producer.EventProducer;
 import com.imguru.api.imageapi.service.service.UploadService;
 import com.imguru.api.imageapi.service.service.UserService;
 import org.junit.jupiter.api.Assertions;
@@ -26,6 +27,7 @@ import org.springframework.web.client.RestTemplate;
 
 import java.util.*;
 
+import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.mock;
 
 @ExtendWith(MockitoExtension.class)
@@ -45,9 +47,12 @@ public class UploadServiceTest {
     @Mock
     private SecurityContextImpl securityContext;
 
+    @Mock
+    private EventProducer eventProducer;
+
     @BeforeEach
     public void initialization(){
-        uploadService=new UploadService(imgurConfig,restTemplate,userService);
+        uploadService=new UploadService(imgurConfig,restTemplate,userService,eventProducer);
     }
 
     @Test
@@ -69,6 +74,7 @@ public class UploadServiceTest {
         Mockito.when(restTemplate.postForEntity(Mockito.anyString(),Mockito.any(HttpEntity.class),Mockito.eq(Map.class))).thenReturn(ResponseEntity.ok(response));
         Mockito.when(userService.loadUserDetails(Mockito.anyString())).thenReturn(Optional.of(buildUserEntity()));
         Mockito.when(userService.updateUser(Mockito.any(UserEntity.class))).thenReturn(buildUser());
+        doNothing().when(eventProducer).publishProfileEventToTopic(Mockito.any(UserEntity.class));
         Map<String,Object> map=uploadService.uploadImage("86da8fc7f0ab6b9297b760f16623fd2ff6be752d","{\"title\":\"ImageTitle\",\"description\":\"Image Description\"}");
         Assertions.assertNotNull(map);
         Assertions.assertTrue(map.containsValue("ujskjkkl"));

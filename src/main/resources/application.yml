@@ -1,0 +1,38 @@
+spring:
+  kafka:
+    consumer:
+      bootstrap-servers: localhost:9092
+      group-id: group_id
+      auto-offset-reset: earliest
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+    producer:
+      bootstrap-servers: localhost:9092
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.apache.kafka.common.serialization.StringSerializer
+  datasource:
+    driverClassName: org.h2.Driver
+    password: password
+    url: jdbc:h2:mem:testdb
+    username: sa
+  h2:
+    console:
+      enabled: true
+  main:
+    allow-circular-references: true
+
+
+# =================================
+# Imgur
+# =================================
+imgur:
+  client:
+    accessToken: 83e68dc57861a95ede4f3c25a3b33f5fe0c20b3f
+    accessTokenUrl: https://api.imgur.com/oauth2/token
+    albumId: Scwk70y
+    authorizeUrl: https://api.imgur.com/oauth2/authorize
+    clientId: f1d6d3b2434b315
+    clientSecret: 86da8fc7f0ab6b9297b760f16623fd2ff6be752d
+    uploadUrl: https://api.imgur.com/3/image
+
+
